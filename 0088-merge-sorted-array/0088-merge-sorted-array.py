@@ -6,10 +6,11 @@ class Solution:
         total = m + n - 1
         first = m - 1
         second = n - 1
-
+        
+        if second < 0:
+            return
 
         while first >= 0 and second >= 0:
-            
             if nums1[first] > nums2[second]:
                 nums1[total] = nums1[first]
                 first -= 1
