@@ -5,26 +5,30 @@
 #         self.left = left
 #         self.right = right
 class Solution:
+    rootmap = {}
+    idx = 0
     def buildTree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        self.rootmap = {}
+        self.idx = 0
 
-        
-        #base case 
-        if len(preorder) == 0:
-            return
-        rootval = preorder[0]
-        root = TreeNode(rootval)
-        #logic
-        rootidx = -1
         for i in range(len(inorder)):
-            if inorder[i] == rootval:
-                rootidx = i
-        
-        inleft = inorder[0 : rootidx]
-        inright = inorder[rootidx + 1 : len(inorder)]
-        preleft = preorder[1: len(inleft) + 1]
-        preright = preorder[len(inleft) + 1 : len(preorder)]
+            self.rootmap[inorder[i]] = i
 
-        root.left = self.buildTree(preleft, inleft)
-        root.right = self.buildTree(preright, inright)
-        return root
-        
+        def helper(inorder, preorder, start, end, rootidx):
+            #base
+            if start > end:
+                return
+            
+            #logic
+            rootval = preorder[self.idx]
+            self.idx += 1
+
+            rootidx = self.rootmap[rootval]
+            root = TreeNode(rootval)
+
+            root.left = helper(inorder, preorder, start, rootidx - 1, rootidx)
+            root.right = helper(inorder, preorder, rootidx + 1, end, rootidx)
+
+            return root
+
+        return helper(inorder, preorder, 0, len(inorder) - 1, 0)
