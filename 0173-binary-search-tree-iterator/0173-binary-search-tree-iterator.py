@@ -5,30 +5,28 @@
 #         self.left = left
 #         self.right = right
 class BSTIterator:
-    li = []
-    index = 0
+    st = []
     def __init__(self, root: Optional[TreeNode]):
-        self.li = []
-        self.index = 0
-        self.inorder(root)
-    def inorder(self, root):
-        #base
-        if not root:
-            return
-        #logic
-        self.inorder(root.left)
-        self.li.append(root.val)
-        self.inorder(root.right)
+        self.st = []
+        self.dfs(root)
+
+    def dfs(self, root):
+
+        while root:
+            self.st.append(root)
+            root = root.left
 
     def next(self) -> int:
-        result = self.li[self.index]
-        self.index += 1
-        return result
 
+        cur = self.st.pop()
+        self.dfs(cur.right)
+        return cur.val
+        
     def hasNext(self) -> bool:
-        if self.index != len(self.li):
+        if self.st:
             return True
-        return False
+        else:
+            return False
         
 
 
