@@ -12,9 +12,16 @@ class Solution:
         def helper(root):
             if not root:
                 return 0
-            return 1 + max(helper(root.left), helper(root.right))
+            left = helper(root.left)
+            right = helper(root.right)
 
-        if abs(helper(root.left) - helper(root.right)) > 1:
-            return False
-        return self.isBalanced(root.left) and self.isBalanced(root.right)
+            if abs(left - right) > 1:
+                return -1
+            if left == -1 or right == -1:
+                return -1
+            return 1 + max(helper(root.right), helper(root.left))
+        
+        return helper(root) != -1
+
+        
     
